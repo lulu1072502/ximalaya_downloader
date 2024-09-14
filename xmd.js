@@ -50,12 +50,25 @@ function myParseInt(value, dummyPrevious) {
 
 function cleanedStr(str) {
     // 定义文件路径相关字符的正则表达式
-    const pathCharactersRegex = /[<>:"\/\\|?*\x00-\x1F]/g;
+    const pathCharactersRegex1 = /[<>:"\/\\|?*\x00-\x1F]/g;
+    const pathCharactersRegex2 = /[\(（].*[\)）]/g;
+    const pathCharactersRegex3 = /[\#].*[\#]/g;
+    const pathCharactersRegex4 = /[\【].*[\】]/g;
+    const pathCharactersRegex5 = /[\《].*[\》]/g;
     // 定义替换后的字符
-    const replacementCharacter = '_';
-    // 替换文件路径相关字符
-    const encodedStr = str.replace(pathCharactersRegex, replacementCharacter);
-    return encodedStr;
+    const replacementCharacter1 = '_';
+    const replacementCharacter2 = '';
+    // 第一次替换
+    const encodedStr1 = str.replace(pathCharactersRegex1, replacementCharacter1);
+    // 第二次替换
+    const encodedStr2 = encodedStr1.replace(pathCharactersRegex2, replacementCharacter2);
+    // 第三次替换
+    const encodedStr3 = encodedStr2.replace(pathCharactersRegex3, replacementCharacter2);
+    // 第四次替换
+    const encodedStr4 = encodedStr3.replace(pathCharactersRegex4, replacementCharacter2);
+    // 第五次替换
+    const encodedStr5 = encodedStr4.replace(pathCharactersRegex5, replacementCharacter2);
+    return encodedStr5;
 }
 
 async function download(factory, options, album, track) {
