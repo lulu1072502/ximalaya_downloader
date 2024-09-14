@@ -375,7 +375,7 @@ class AbstractDownloader {
      * @private
      */
     async _getBaseInfo(trackId) {
-        const trackQualityLevel = 2
+        const trackQualityLevel = 3
         const url = `${config.baseUrl}/mobile-playpage/track/v3/baseInfo/${Date.now()}?device=${this.deviceType}&trackId=${trackId}&trackQualityLevel=${trackQualityLevel}`
         const referer = `${config.baseUrl}/album/${trackId}`
         const headers = buildHeaders(referer, await this._getCookies())
