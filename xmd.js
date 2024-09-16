@@ -89,11 +89,12 @@ async function getCove(options,album) {
         if (err) {
             var stream = fs.createWriteStream(targetDir +'/cover' + imageExt);
             https.get(url, function(res) {
-            res.pipe(stream);
-            log.info('封面下载成功');
-        })
-    }
-});
+                res.pipe(stream);
+                log.info('封面下载成功');
+            })
+        }
+    });
+}
 
 
 async function download(factory, options, album, track) {
