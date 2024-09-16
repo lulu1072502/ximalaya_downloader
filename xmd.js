@@ -74,23 +74,25 @@ function cleanedStr(str) {
 async function getCove(options,album) {
     // 下载封面
     let targetDir = options.output
-    let url = album.cove
+    const url = album.cover
+    const imageExt = path.parse(url).ext;
+
     if (targetDir.includes('~')) {
         targetDir = targetDir.replace('~', os.homedir())
     }
     targetDir = path.join(targetDir, cleanedStr(album.albumTitle))
-
     if (!fs.existsSync(targetDir)) {
         mkdirpSync(targetDir)
     }
-
-    var imageExt = path.parse(url).ext;
-    var stream = fs.createWriteStream( targetDir +'/cove' + imageExt);
-    https.get(url, function(res) {
-        res.pipe(stream);
-        console.log('封面下载成功');
-    });
-}
+    fs.access((targetDir +'/cover' + imageExt), fs.constants.F_OK, (err) => {
+        if (err) {
+            var stream = fs.createWriteStream(targetDir +'/cover' + imageExt);
+            https.get(url, function(res) {
+            res.pipe(stream);
+            log.info('封面下载成功');
+        })
+    }
+});
 
 
 async function download(factory, options, album, track) {
@@ -185,14 +187,14 @@ async function main() {
     } else {
         await albumDB.update({'albumId': albumId}, {
             "isFinished": album.isFinished,
-            //"cover": albumResp.cover,
+            "cover": albumResp.cover,
             "trackCount": album.trackCount
         })
         album = albumResp
     }
 
     if(album.cover){
-        console.log(album.cover)
+        log.info(album.cover)
         // TODO 下载图片
         await getCove(options, album)
     }
