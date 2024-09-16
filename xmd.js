@@ -71,6 +71,28 @@ function cleanedStr(str) {
     return encodedStr5;
 }
 
+async function getCove(options,album) {
+    // 下载封面
+    let targetDir = options.output
+    let url = album.cove
+    if (targetDir.includes('~')) {
+        targetDir = targetDir.replace('~', os.homedir())
+    }
+    targetDir = path.join(targetDir, cleanedStr(album.albumTitle))
+
+    if (!fs.existsSync(targetDir)) {
+        mkdirpSync(targetDir)
+    }
+
+    var imageExt = path.parse(url).ext;
+    var stream = fs.createWriteStream( targetDir +'/cove' + imageExt);
+    https.get(url, function(res) {
+        res.pipe(stream);
+        console.log('封面下载成功');
+    });
+}
+
+
 async function download(factory, options, album, track) {
     if (track.path && fs.existsSync(track.path)) {
         return
@@ -172,6 +194,7 @@ async function main() {
     if(album.cover){
         console.log(album.cover)
         // TODO 下载图片
+        await getCove(options, album)
     }
 
     const iTrackCount = await trackDB.count({'albumId': albumId})
