@@ -11,6 +11,7 @@ import {DownloaderFactory} from './handler/downloader.js'
 import os from "os";
 import fs from "fs";
 import path from 'path'
+import https from 'https'
 import {mkdirpSync} from "mkdirp";
 import {rimrafSync} from 'rimraf'
 
