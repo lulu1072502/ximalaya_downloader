@@ -163,8 +163,8 @@ async function main() {
     } else {
         await albumDB.update({'albumId': albumId}, {
             "isFinished": album.isFinished,
-            "trackCount": album.trackCount,
-            "cover": albumResp.cover
+            //"cover": albumResp.cover,
+            "trackCount": album.trackCount
         })
         album = albumResp
     }
